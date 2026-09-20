@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Provider Entries</title>
+<style>
+  body {
+    font-family: system-ui, sans-serif;
+    margin: 0;
+    padding: 2rem 1rem;
+    background: #f4f4f8;
+  }
+  .card {
+    background: #fff;
+    padding: 2rem 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    max-width: 480px;
+    margin: 0 auto 2rem;
+    box-sizing: border-box;
+  }
+  h1 {
+    font-size: 1.25rem;
+    margin-top: 0;
+  }
+  label {
+    display: block;
+    margin: 0.75rem 0 0.25rem;
+    font-size: 0.875rem;
+  }
+  input[type="text"], input[type="url"], textarea, input[type="file"] {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 1rem;
+    font-family: inherit;
+  }
+  button {
+    margin-top: 1rem;
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    background: #4f46e5;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+  button:hover {
+    background: #4338ca;
+  }
+  .flash {
+    color: #b91c1c;
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+  }
+  .entries {
+    max-width: 480px;
+    margin: 0 auto;
+  }
+  .entry {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    padding: 1rem;
+    margin-bottom: 1rem;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+  .entry img {
+    width: 64px;
+    height: 64px;
+    object-fit: cover;
+    border-radius: 8px;
+    flex-shrink: 0;
+  }
+  .entry-text {
+    font-size: 0.9rem;
+    overflow-wrap: anywhere;
+  }
+  .entry-text a {
+    color: #4f46e5;
+  }
+  .empty {
+    text-align: center;
+    color: #666;
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <h1>Add a Provider Entry</h1>
+    <form method="POST" enctype="multipart/form-data">
+      <label for="image">Picture (optional)</label>
+      <input type="file" id="image" name="image" accept="image/*">
+
+      <label for="text">Text</label>
+      <textarea id="text" name="text" rows="3" required></textarea>
+
+      <label for="link">Link</label>
+      <input type="url" id="link" name="link" placeholder="https://..." required>
+
+      <button type="submit">Save entry</button>
+
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          {% for message in messages %}
+            <div class="flash">{{ message }}</div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+    </form>
+  </div>
+
+  <div class="entries">
+    {% for entry in entries %}
+      <div class="entry">
+        {% if entry.image_data_url %}
+          <img src="{{ entry.image_data_url }}" alt="">
+        {% endif %}
+        <div class="entry-text">
+          <div>{{ entry.text }}</div>
+          <a href="{{ entry.link }}" target="_blank" rel="noopener noreferrer">{{ entry.link }}</a>
+        </div>
+      </div>
+    {% else %}
+      <p class="empty">No entries yet.</p>
+    {% endfor %}
+  </div>
+</body>
+</html>

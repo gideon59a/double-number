@@ -6,3 +6,4 @@ env/
 *.log
 flask_pid.txt
 .env
+*.db
