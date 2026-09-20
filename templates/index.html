@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Double It</title>
+<style>
+  body {
+    font-family: system-ui, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    background: #f4f4f8;
+  }
+  .card {
+    background: #fff;
+    padding: 2rem 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    text-align: center;
+  }
+  h1 {
+    font-size: 1.25rem;
+    margin-top: 0;
+  }
+  input, button {
+    font-size: 1rem;
+    padding: 0.5rem 0.75rem;
+    margin: 0.5rem 0;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  input {
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+  button {
+    background: #4f46e5;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  button:hover {
+    background: #4338ca;
+  }
+  #result {
+    background: #f0f0f7;
+    font-weight: bold;
+  }
+  #error {
+    color: #b91c1c;
+    font-size: 0.875rem;
+    min-height: 1.25em;
+  }
+  .divider {
+    border: none;
+    border-top: 1px solid #e5e5ea;
+    margin: 1.25rem 0;
+  }
+  .whatsapp-btn {
+    display: inline-block;
+    background: #25D366;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 6px;
+  }
+  .whatsapp-btn:hover {
+    background: #1ebe57;
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <h1>Double a Number</h1>
+    <input type="number" id="numberInput" placeholder="Enter a number">
+    <button id="doubleBtn">Double it</button>
+    <input type="text" id="result" placeholder="Result" readonly>
+    <div id="error"></div>
+
+    <hr class="divider">
+
+    <a class="whatsapp-btn" href="{{ whatsapp_group_link }}" target="_blank" rel="noopener noreferrer">
+      Join WhatsApp Group
+    </a>
+  </div>
+
+  <script>
+    document.getElementById('doubleBtn').addEventListener('click', async function () {
+      var input = document.getElementById('numberInput');
+      var result = document.getElementById('result');
+      var error = document.getElementById('error');
+      error.textContent = '';
+      result.value = '';
+
+      var value = parseFloat(input.value);
+      if (isNaN(value)) {
+        error.textContent = 'Please enter a valid number.';
+        return;
+      }
+
+      try {
+        var response = await fetch('/api/double', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ number: value })
+        });
+        if (!response.ok) {
+          throw new Error('Request failed');
+        }
+        var data = await response.json();
+        result.value = data.result;
+      } catch (err) {
+        error.textContent = 'Could not reach the server.';
+      }
+    });
+  </script>
+</body>
+</html>
