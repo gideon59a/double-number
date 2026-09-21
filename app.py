@@ -2,7 +2,7 @@ import base64
 import os
 
 from dotenv import load_dotenv
-from flask import Flask, flash, jsonify, redirect, render_template, request, url_for
+from flask import Flask, abort, flash, jsonify, redirect, render_template, request, url_for
 from flask_sqlalchemy import SQLAlchemy
 
 load_dotenv()
@@ -41,7 +41,14 @@ with app.app_context():
 
 @app.route("/")
 def index():
-    return render_template("index.html", whatsapp_group_link=WHATSAPP_GROUP_LINK)
+    entries = Entry.query.order_by(Entry.created_at.desc()).all()
+    return render_template("index.html", whatsapp_group_link=WHATSAPP_GROUP_LINK, entries=entries)
+
+
+@app.route("/entries/<int:entry_id>")
+def entry_detail(entry_id):
+    entry = db.session.get(Entry, entry_id) or abort(404)
+    return render_template("entry_detail.html", entry=entry)
 
 
 @app.route("/provider", methods=["GET", "POST"])

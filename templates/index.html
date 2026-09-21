@@ -70,6 +70,43 @@
   .whatsapp-btn:hover {
     background: #1ebe57;
   }
+  .entries {
+    text-align: left;
+    margin-top: 0.5rem;
+  }
+  .entries h2 {
+    font-size: 0.95rem;
+    margin: 0 0 0.5rem;
+  }
+  .entry-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem;
+    border-radius: 8px;
+    text-decoration: none;
+    color: inherit;
+  }
+  .entry-link:hover {
+    background: #f0f0f7;
+  }
+  .entry-link img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 6px;
+    flex-shrink: 0;
+  }
+  .entry-link .entry-snippet {
+    font-size: 0.875rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .empty {
+    color: #666;
+    font-size: 0.875rem;
+  }
 </style>
 </head>
 <body>
@@ -85,6 +122,22 @@
     <a class="whatsapp-btn" href="{{ whatsapp_group_link }}" target="_blank" rel="noopener noreferrer">
       Join WhatsApp Group
     </a>
+
+    <hr class="divider">
+
+    <div class="entries">
+      <h2>Provider Entries</h2>
+      {% for entry in entries %}
+        <a class="entry-link" href="{{ url_for('entry_detail', entry_id=entry.id) }}">
+          {% if entry.image_data_url %}
+            <img src="{{ entry.image_data_url }}" alt="">
+          {% endif %}
+          <span class="entry-snippet">{{ entry.text }}</span>
+        </a>
+      {% else %}
+        <p class="empty">No entries yet.</p>
+      {% endfor %}
+    </div>
   </div>
 
   <script>

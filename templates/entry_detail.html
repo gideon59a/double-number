@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Entry Details</title>
+<style>
+  body {
+    font-family: system-ui, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    background: #f4f4f8;
+  }
+  .card {
+    background: #fff;
+    padding: 2rem 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    max-width: 420px;
+    text-align: center;
+    box-sizing: border-box;
+  }
+  img {
+    max-width: 100%;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+  }
+  p {
+    font-size: 1rem;
+    overflow-wrap: anywhere;
+  }
+  a.entry-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    color: #4f46e5;
+    word-break: break-all;
+  }
+  .back {
+    display: inline-block;
+    margin-top: 1.5rem;
+    font-size: 0.875rem;
+    color: #666;
+    text-decoration: none;
+  }
+  .back:hover {
+    text-decoration: underline;
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    {% if entry.image_data_url %}
+      <img src="{{ entry.image_data_url }}" alt="">
+    {% endif %}
+    <p>{{ entry.text }}</p>
+    <a class="entry-link" href="{{ entry.link }}" target="_blank" rel="noopener noreferrer">{{ entry.link }}</a>
+    <br>
+    <a class="back" href="{{ url_for('index') }}">&larr; Back</a>
+  </div>
+</body>
+</html>
